@@ -1,11 +1,14 @@
 package route
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"restapi-fiber-gorm/handler"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-
 func RouteInit(r *fiber.App) {
-	r.Get("/", handler.HelloHandler)
+	r.Get("/", handler.HelloWorld)
+	r.Get("/getAllUser", handler.GetAllUser)
+
+	r.Post("/createUser", handler.CreateUser)
 }
