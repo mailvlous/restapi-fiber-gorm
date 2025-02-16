@@ -21,6 +21,10 @@ func HelloWorld(ctx *fiber.Ctx) error {
 // CreateUserHandler handles the creation of a new user
 
 func GetAllUser(ctx *fiber.Ctx) error {
+	userInfo := ctx.Locals("userInfo")
+	fmt.Println(userInfo)
+
+
 	var users []entity.Users
 
     result := database.DB.Find(&users)
