@@ -4,6 +4,7 @@ import (
 	"restapi-fiber-gorm/handler"
 	"restapi-fiber-gorm/config"
 	"restapi-fiber-gorm/middleware"
+	"restapi-fiber-gorm/utils"
 	
 
 	"github.com/gofiber/fiber/v2"
@@ -23,4 +24,6 @@ func RouteInit(r *fiber.App) {
 	r.Static("/public", config.ProjectRootPath + "/public/assets")
 
 	r.Post("/createUser", handler.CreateUser)
+
+	r.Post("/createBook",  utils.HandleSingleFile, handler.CreateBook)
 }
