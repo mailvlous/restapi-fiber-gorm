@@ -26,4 +26,6 @@ func RouteInit(r *fiber.App) {
 	r.Post("/createUser", handler.CreateUser)
 
 	r.Post("/createBook",  utils.HandleSingleFile, handler.CreateBook)
+
+	r.Post("/gallery", utils.HandleMultipleFile, handler.PhotoHandlerCreate)
 }
