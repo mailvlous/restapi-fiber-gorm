@@ -6,6 +6,7 @@ import (
 	"restapi-fiber-gorm/database"
 	"restapi-fiber-gorm/model/entity"
 	"restapi-fiber-gorm/model/request"
+	"restapi-fiber-gorm/utils"
 	"log"
 )
 
@@ -47,5 +48,36 @@ func PhotoHandlerCreate(ctx *fiber.Ctx) error {
 
 	return ctx.JSON(fiber.Map{
 		"messaage": "success",
+	})
+}
+
+func PhotoHandlerDelete(ctx *fiber.Ctx) error {
+	photoId := ctx.Params("id")
+
+	var photo entity.Photos
+
+	//	CHECK AVAILABLE PHOTO
+	err := database.DB.Debug().First(&photo, "id=?", photoId).Error
+	if err != nil {
+		return ctx.Status(404).JSON(fiber.Map{
+			"message": "photo not found",
+		})
+	}
+
+	//	HANDLE REMOVE FILE
+	errDeleteFile := utils.HandleRemoveFile(photo.Image)
+	if errDeleteFile != nil {
+		log.Println("Fail to delete some file")
+	}
+
+	errDelete := database.DB.Debug().Delete(&photo).Error
+	if errDelete != nil {
+		return ctx.Status(500).JSON(fiber.Map{
+			"message": "internal server error",
+		})
+	}
+
+	return ctx.JSON(fiber.Map{
+		"message": "photo was deleted",
 	})
 }
